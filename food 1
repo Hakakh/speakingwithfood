@@ -1,0 +1,558 @@
+index.html
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Luyện Nói Tiếng Anh - Từ Vựng Đồ Ăn</title>
+    <style>
+        /* Basic styling for the body and container */
+        body {
+            font-family: Arial, sans-serif; /* Sử dụng Arial hoặc font sans-serif chung */
+            background: #f0f8ff; /* Nền xanh dương nhạt */
+            padding: 20px;
+            line-height: 1.6; /* Cải thiện khả năng đọc */
+            color: #333; /* Màu chữ mặc định */
+            display: flex; /* Sử dụng flexbox để căn giữa */
+            justify-content: center; /* Căn giữa theo chiều ngang */
+            align-items: flex-start; /* Căn trên cùng theo chiều dọc, cho phép cuộn nếu nội dung dài */
+            min-height: 100vh; /* Chiều cao tối thiểu bằng chiều cao viewport */
+            margin: 0; /* Loại bỏ margin mặc định của body */
+        }
+
+        /* Container for the main content */
+        .container {
+            max-width: 600px; /* Chiều rộng tối đa */
+            width: 100%; /* Đảm bảo container chiếm toàn bộ chiều rộng nếu màn hình nhỏ hơn max-width */
+            margin: 20px auto; /* Căn giữa container và thêm lề dọc */
+            background: #fff; /* Nền trắng cho khu vực nội dung */
+            padding: 20px;
+            border-radius: 10px; /* Bo góc */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Đổ bóng nhẹ */
+            text-align: center; /* Căn giữa chữ trong container */
+        }
+
+        /* Heading style */
+        h1 {
+            text-align: center;
+            color: #0056b3; /* Màu xanh dương đậm hơn cho tiêu đề */
+            margin-bottom: 20px;
+        }
+
+        /* Style for the question area */
+        .question {
+            margin: 20px 0;
+            font-size: 1.2em; /* Chữ to hơn một chút cho câu hỏi */
+            font-weight: bold;
+            color: #555; /* Màu xám cho chữ câu hỏi */
+        }
+
+        /* Style for the target sentence instruction */
+        .target-sentence {
+            margin-top: 10px;
+            font-size: 1em;
+            color: #007bff; /* Màu xanh dương cho hướng dẫn */
+            font-style: italic;
+        }
+
+        /* Style for the answer display box */
+        .answer-box {
+            background: #eef; /* Nền xanh dương rất nhạt */
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 1.5em; /* Đảm bảo box có chiều cao nhất định ngay cả khi trống */
+            text-align: left; /* Căn chữ câu trả lời về bên trái */
+            word-wrap: break-word; /* Ngắt từ dài */
+            border: 1px solid #cce; /* Viền nhẹ */
+        }
+
+        /* Style for buttons */
+        button {
+            margin: 10px 5px; /* Thêm lề xung quanh nút */
+            padding: 12px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #007bff; /* Màu xanh dương chính */
+            color: white;
+            transition: background-color 0.3s ease, transform 0.1s ease; /* Hiệu ứng chuyển màu mượt mà và hiệu ứng nhấn nút */
+        }
+
+        button:active {
+            transform: scale(0.98); /* Hiệu ứng nút được nhấn xuống */
+        }
+
+        /* Button hover effect */
+        button:hover {
+            background: #0056b3; /* Màu xanh dương đậm hơn khi hover */
+        }
+
+        /* Disabled button style */
+        button:disabled {
+            background: #cccccc; /* Màu xám cho nút bị vô hiệu hóa */
+            cursor: not-allowed;
+        }
+
+        /* Style for the image */
+        .image {
+            display: none; /* Ban đầu ẩn */
+            width: 100%; /* Làm cho hình ảnh responsive */
+            max-width: 350px; /* Chiều rộng tối đa cho hình ảnh */
+            height: auto; /* Duy trì tỷ lệ khung hình */
+            margin: 20px auto; /* Căn giữa hình ảnh và thêm lề dọc */
+            border-radius: 8px; /* Bo góc cho hình ảnh */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Đổ bóng nhẹ cho hình ảnh */
+            border: 1px solid #ddd; /* Viền nhẹ cho hình ảnh */
+        }
+
+        /* Style for feedback messages */
+        .result {
+            background: #e0ffe0; /* Nền xanh lá nhạt */
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 5px;
+            text-align: left;
+            border: 1px solid #a3e0a3; /* Viền xanh lá */
+            font-weight: bold;
+        }
+
+        /* Style for the result display area */
+        .results-display {
+            background: #fff8e1; /* Nền vàng rất nhạt */
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            text-align: left;
+            border: 1px solid #ffecb3; /* Viền vàng nhạt */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .results-display h3 {
+            color: #0056b3; /* Màu tiêu đề giống h1 */
+            text-align: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .results-display p {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed #eee; /* Phân cách các mục kết quả */
+        }
+        .results-display p:last-child {
+            border-bottom: none; /* Không có đường viền cho mục cuối cùng */
+        }
+
+
+        .results-display strong {
+            color: #007bff;
+        }
+
+        .results-display em {
+            color: #555;
+        }
+
+        .results-display button { /* Nút chia sẻ trong phần kết quả */
+            display: block;
+            margin: 20px auto 10px auto; /* Căn giữa nút */
+            background-color: #28a745; /* Màu xanh lá cây cho nút chia sẻ */
+        }
+        .results-display button:hover {
+            background-color: #218838; /* Màu xanh lá cây đậm hơn khi hover */
+        }
+
+
+        #copyFeedback {
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #155724; /* Màu xanh đậm cho thông báo copy */
+            background-color: #d4edda; /* Nền xanh nhạt */
+            border: 1px solid #c3e6cb; /* Viền xanh */
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        #copyFeedback a {
+            color: #0056b3;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Luyện Nói Tiếng Anh - Từ Vựng Đồ Ăn</h1>
+        <div id="questionArea" class="question">Bấm "Bắt đầu" để nghe câu hỏi.</div>
+        <img id="questionImage" class="image" src="https://placehold.co/400x300/E0E0E0/B0B0B0?text=Hình+ảnh+câu+hỏi" alt="Hình ảnh câu hỏi" style="display: none;" onerror="this.src='https://placehold.co/400x300/E0E0E0/B0B0B0?text=Lỗi+tải+ảnh';" />
+        <div id="targetSentenceArea" class="target-sentence" style="display: none;"></div>
+        <div>
+            <button onclick="speakQuestion()" id="startButton">🔊 Bắt đầu</button>
+            <button onclick="startRecognition()" id="answerButton">🎤 Trả lời</button>
+        </div>
+        <div id="transcript" class="answer-box"></div>
+        <div id="feedback" class="result" style="display: none;"></div>
+        <div>
+            <button onclick="nextQuestion()" id="nextButton">➡️ Câu hỏi tiếp theo</button>
+            <button onclick="displayResults()" id="viewResultsButton">📊 Xem kết quả</button>
+        </div>
+        <div id="resultsDisplayArea" class="results-display" style="display: none;"></div>
+    </div>
+
+    <script>
+        // Mảng câu hỏi, hình ảnh, tên đồ ăn và câu trả lời đúng
+        const questions = [
+            // Câu hỏi 1: Không có hình ảnh, không có foodName, không có correctAnswer cụ thể
+            { question: "What's your name?", image: "", foodName: null, correctAnswer: null },
+            // Các câu hỏi về đồ ăn - Đã thay đổi câu hỏi và câu trả lời đúng
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504141034271092312.jpg", foodName: "apples", correctAnswer: "I like to eat apples." }, // Hình ảnh: Táo
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504141033314127562.jpg", foodName: "bananas", correctAnswer: "I like to eat bananas." }, // Hình ảnh: Chuối
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504141033506151991.jpg", foodName: "oranges", correctAnswer: "I like to eat oranges." }, // Hình ảnh: cam
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504181532276827489.jpg", foodName: "strawberries", correctAnswer: "I like to eat strawberries." }, // Hình ảnh: Dâu tây
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504181533175517785.jpg", foodName: "watermelon", correctAnswer: "I like to eat watermelon." }, // Hình ảnh: Dưa hấu
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504181534478555845.jpg", foodName: "mangoes", correctAnswer: "I like to eat mangoes." }, // Hình ảnh: Xoài
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504141034065919288.jpg", foodName: "pineapples", correctAnswer: "I like to eat pineapples." }, // Hình ảnh: Dứa
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504181537008328849.jpg", foodName: "cherries", correctAnswer: "I like to eat cherries." }, // Hình ảnh: Anh đào
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504181539464041236.jpg", foodName: "broccoli", correctAnswer: "I like to eat broccoli." }, // Hình ảnh: Bông cải xanh
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504181542372646542.jpg", foodName: "carrots", correctAnswer: "I like to eat carrots." }, // Hình ảnh: Cà rốt
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504181544363516825.jpg", foodName: "corn", correctAnswer: "I like to eat corn." }, // Hình ảnh: Ngô
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504181610006728723.jpg", foodName: "rice", correctAnswer: "I like to eat rice." }, // Hình ảnh: Gạo
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504181602176468296.jpg", foodName: "noodles", correctAnswer: "I like to eat noodles." }, // Hình ảnh: Mì
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504181602312331406.jpg", foodName: "chicken", correctAnswer: "I like to eat chicken." }, // Hình ảnh: Thịt gà
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504181603211314197.jpg", foodName: "beef", correctAnswer: "I like to eat beef." }, // Hình ảnh: Thịt bò
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504181603346252980.jpg", foodName: "fish", correctAnswer: "I like to eat fish." }, // Hình ảnh: Cá
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504181603506586124.jpg", foodName: "eggs", correctAnswer: "I like to eat eggs." }, // Hình ảnh: Trứng
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504181604021443793.jpg", foodName: "pizza", correctAnswer: "I like to eat pizza." }, // Hình ảnh: Bánh pizza
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504181604489459921.jpg", foodName: "a hamburger", correctAnswer: "I like to eat a hamburger." }, // Hình ảnh: Bánh hamburger
+            { question: "What do you like to eat?", image: "https://yourhomework.net/yhw/f/yhw-voca/2025/04/1/202504181607048976434.jpg", foodName: "ice cream", correctAnswer: "I like to eat ice cream." }  // Hình ảnh: Kem
+        ];
+
+        let currentIndex = 0; // Theo dõi chỉ số câu hỏi hiện tại
+        let studentAnswers = new Array(questions.length).fill(""); // Lưu trữ câu trả lời của học sinh
+
+        // DOM Elements
+        const questionArea = document.getElementById("questionArea");
+        const questionImage = document.getElementById("questionImage");
+        const targetSentenceArea = document.getElementById("targetSentenceArea");
+        const transcriptDiv = document.getElementById("transcript");
+        const feedbackDiv = document.getElementById("feedback");
+        const resultsDisplayArea = document.getElementById("resultsDisplayArea");
+        const startButton = document.getElementById("startButton");
+        const answerButton = document.getElementById("answerButton");
+        const nextButton = document.getElementById("nextButton");
+        const viewResultsButton = document.getElementById("viewResultsButton");
+
+
+        // Kiểm tra hỗ trợ SpeechRecognition API
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition;
+
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.lang = 'en-US'; // Đặt ngôn ngữ nhận dạng là tiếng Anh
+            recognition.continuous = false; // Chỉ ghi lại một câu nói duy nhất
+            recognition.interimResults = false; // Chỉ trả về kết quả cuối cùng
+
+            // Xử lý sự kiện khi có kết quả nhận dạng
+            recognition.onresult = function (event) {
+                const transcript = event.results.length > 0 ? event.results[0][0].transcript.trim() : '';
+                transcriptDiv.textContent = `Câu trả lời của bạn: ${transcript}`;
+                studentAnswers[currentIndex] = transcript; // Lưu câu trả lời
+                provideFeedback(transcript); // Cung cấp phản hồi
+                answerButton.disabled = false; // Kích hoạt lại nút trả lời sau khi có kết quả
+            };
+
+            // Xử lý sự kiện khi có lỗi nhận dạng
+            recognition.onerror = function(event) {
+                console.error("Lỗi nhận dạng giọng nói:", event.error);
+                let errorMessage = `Lỗi nhận dạng giọng nói: ${event.error}`;
+                if (event.error === 'no-speech') {
+                    errorMessage = "Không phát hiện thấy giọng nói. Vui lòng thử lại.";
+                } else if (event.error === 'audio-capture') {
+                    errorMessage = "Lỗi thu âm thanh. Kiểm tra micro của bạn.";
+                } else if (event.error === 'not-allowed') {
+                    errorMessage = "Quyền truy cập micro bị từ chối. Vui lòng cấp quyền.";
+                }
+                feedbackDiv.textContent = errorMessage;
+                feedbackDiv.style.display = 'block';
+                speakText("Có lỗi xảy ra, bạn hãy thử lại.", 'vi-VN');
+                answerButton.disabled = false; // Kích hoạt lại nút trả lời
+            };
+
+            recognition.onstart = function() {
+                answerButton.disabled = true; // Vô hiệu hóa nút trả lời trong khi đang nghe
+                transcriptDiv.textContent = "Đang nghe...";
+            };
+
+            recognition.onend = function() {
+                answerButton.disabled = false; // Kích hoạt lại nút trả lời khi kết thúc
+                    if (transcriptDiv.textContent === "Đang nghe...") { // Nếu không có kết quả nào được xử lý (ví dụ: onresult không kích hoạt)
+                        // Có thể không cần thiết nếu onresult hoặc onerror luôn được gọi
+                    }
+            };
+
+        } else {
+            // Xử lý trường hợp không hỗ trợ Speech Recognition
+            console.warn("API Nhận dạng giọng nói không được hỗ trợ trong trình duyệt này.");
+            if (answerButton) {
+                answerButton.disabled = true;
+                answerButton.textContent = "🎤 API không hỗ trợ";
+            }
+            questionArea.textContent = "Trình duyệt của bạn không hỗ trợ nhận dạng giọng nói. Vui lòng thử trình duyệt khác.";
+        }
+
+        // Hàm phát âm văn bản
+        function speakText(text, lang = 'en-US') {
+            // Dừng bất kỳ phát âm nào đang diễn ra
+            speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang;
+            speechSynthesis.speak(utterance);
+        }
+
+        // Hàm đọc câu hỏi hiện tại
+        function speakQuestion() {
+            if (currentIndex >= questions.length) {
+                questionArea.textContent = "🎉 Bạn đã hoàn thành tất cả các câu hỏi!";
+                questionImage.style.display = 'none';
+                targetSentenceArea.style.display = 'none';
+                disableButtonsOnComplete();
+                displayResults(); // Tự động hiển thị kết quả khi hoàn thành
+                return;
+            }
+
+            const currentQuestionData = questions[currentIndex];
+            speakText(currentQuestionData.question, 'en-US'); // Đọc câu hỏi bằng tiếng Anh
+            questionArea.textContent = `Câu hỏi ${currentIndex + 1}/${questions.length}: ${currentQuestionData.question}`;
+
+            targetSentenceArea.style.display = 'none'; // Ẩn câu mục tiêu trước
+            if (currentQuestionData.image && currentQuestionData.image.trim() !== "") {
+                questionImage.src = currentQuestionData.image;
+                questionImage.style.display = 'block';
+                if (currentQuestionData.foodName) {
+                    // Cập nhật hướng dẫn mục tiêu
+                    targetSentenceArea.textContent = `Hãy đọc: I like to eat ${currentQuestionData.foodName}.`;
+                    targetSentenceArea.style.display = 'block';
+                }
+            } else {
+                questionImage.style.display = 'none';
+            }
+
+            transcriptDiv.textContent = ""; // Xóa bản ghi câu trả lời cũ
+            feedbackDiv.textContent = ""; // Xóa phản hồi cũ
+            feedbackDiv.style.display = 'none';
+            resultsDisplayArea.style.display = 'none'; // Ẩn kết quả khi bắt đầu câu hỏi mới
+            resultsDisplayArea.innerHTML = ''; // Xóa kết quả cũ
+
+            // Kích hoạt lại các nút nếu chúng bị vô hiệu hóa trước đó (trừ khi đã hoàn thành tất cả)
+            startButton.disabled = false;
+            answerButton.disabled = !SpeechRecognition; // Chỉ kích hoạt nếu API được hỗ trợ
+            nextButton.disabled = false;
+            viewResultsButton.disabled = false;
+        }
+
+        // Hàm bắt đầu nhận dạng giọng nói
+        function startRecognition() {
+            if (currentIndex >= questions.length) {
+                transcriptDiv.textContent = "Bạn đã hoàn thành tất cả câu hỏi.";
+                return;
+            }
+            if (recognition) {
+                try {
+                    // feedbackDiv.textContent = ""; // Xóa phản hồi cũ trước khi nghe
+                    // feedbackDiv.style.display = 'none';
+                    recognition.start(); // Bắt đầu nhận dạng
+                } catch (e) {
+                    console.error("Lỗi khi bắt đầu nhận dạng:", e);
+                    transcriptDiv.textContent = "Không thể khởi động micro.";
+                    if (e.name === 'NotAllowedError') {
+                        transcriptDiv.textContent = "Bạn cần cấp quyền truy cập micro.";
+                    } else if (e.name === 'InvalidStateError') {
+                        // Thường xảy ra nếu gọi start() khi đang nhận dạng
+                        console.warn("Recognition đang chạy, không thể bắt đầu lại ngay.");
+                        // Có thể không cần làm gì ở đây nếu onend xử lý việc kích hoạt lại nút
+                    }
+                    answerButton.disabled = false; // Đảm bảo nút được kích hoạt lại nếu có lỗi tức thì
+                }
+            } else {
+                transcriptDiv.textContent = "Nhận dạng giọng nói không khả dụng.";
+            }
+        }
+
+        // Hàm cung cấp phản hồi về câu trả lời
+        function provideFeedback(answer) {
+            feedbackDiv.style.display = 'block'; // Hiển thị ô phản hồi
+            const currentQuestionData = questions[currentIndex];
+            let comment = "";
+            let speakFeedbackText = ""; // Văn bản phản hồi bằng giọng nói (tiếng Việt)
+
+            if (!answer || answer.trim() === "") {
+                comment = "⚠️ Không phát hiện thấy câu trả lời. Bạn hãy đọc lại nhé!";
+                speakFeedbackText = "Bạn hãy đọc lại nhé!";
+            } else if (currentQuestionData.correctAnswer) {
+                // Chuẩn hóa câu trả lời: bỏ dấu câu, chuyển sang chữ thường
+                const normalize = (text) => text.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").replace(/\s+/g, ' ').trim();
+                const normalizedAnswer = normalize(answer);
+                const normalizedCorrectAnswer = normalize(currentQuestionData.correctAnswer);
+
+                if (normalizedAnswer === normalizedCorrectAnswer) {
+                    comment = "✅ Bạn nói rất tốt!";
+                    speakFeedbackText = "Bạn nói rất tốt!";
+                } else {
+                    comment = `❌ Chưa đúng lắm. Bạn hãy thử đọc lại nhé! (Câu đúng nên là: "${currentQuestionData.correctAnswer}")`;
+                    speakFeedbackText = "Bạn hãy đọc lại nhé!";
+                }
+            } else {
+                // Đối với câu hỏi không có đáp án cụ thể (ví dụ: "What's your name?")
+                comment = "✅ Đã ghi lại câu trả lời của bạn.";
+                // Không cần phản hồi giọng nói đặc biệt ở đây, hoặc có thể thêm nếu muốn
+            }
+            feedbackDiv.textContent = comment;
+            if (speakFeedbackText) {
+                speakText(speakFeedbackText, 'vi-VN');
+            }
+        }
+
+        // Hàm chuyển sang câu hỏi tiếp theo
+        function nextQuestion() {
+            currentIndex++;
+            if (currentIndex < questions.length) {
+                speakQuestion();
+            } else {
+                questionArea.textContent = "🎉 Bạn đã hoàn thành tất cả các câu hỏi!";
+                questionImage.style.display = 'none';
+                targetSentenceArea.style.display = 'none';
+                transcriptDiv.textContent = "";
+                feedbackDiv.style.display = 'none';
+                disableButtonsOnComplete();
+                displayResults(); // Tự động hiển thị kết quả
+            }
+        }
+
+        // Hàm vô hiệu hóa các nút khi hoàn thành
+        function disableButtonsOnComplete() {
+            startButton.disabled = true;
+            answerButton.disabled = true;
+            nextButton.disabled = true;
+            // viewResultsButton vẫn có thể để người dùng nhấn lại nếu muốn
+        }
+
+        // Hàm hiển thị kết quả trên trang
+        function displayResults() {
+            resultsDisplayArea.innerHTML = ''; // Xóa kết quả cũ
+
+            let resultHTML = "<h3>Bảng Kết Quả Luyện Nói</h3>";
+            const list = questions.map((q, i) => {
+                const userAnswer = studentAnswers[i] || "(chưa trả lời)";
+                let correctness = "";
+                if (q.correctAnswer) {
+                    const normalize = (text) => text.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").replace(/\s+/g, ' ').trim();
+                    const normalizedUserAnswer = normalize(userAnswer);
+                    const normalizedCorrectAnswer = normalize(q.correctAnswer);
+
+                    if (userAnswer !== "(chưa trả lời)" && normalizedUserAnswer === normalizedCorrectAnswer) {
+                        correctness = " <span style='color: green; font-weight:bold;'>✔ Rất tốt!</span>";
+                    } else if (userAnswer !== "(chưa trả lời)") {
+                        correctness = ` <span style='color: red; font-weight:bold;'>✘ Cần xem lại</span> (Câu đúng: <em>"${q.correctAnswer}"</em>)`;
+                    } else {
+                        correctness = " <span style='color: orange;'>(chưa trả lời)</span>";
+                    }
+                } else if (userAnswer === "(chưa trả lời)") {
+                        correctness = " <span style='color: orange;'>(chưa trả lời)</span>";
+                }
+
+
+                return `<p><strong>Câu hỏi ${i + 1}:</strong> ${q.question}<br/>
+                            <em>Câu trả lời của bạn:</em> ${userAnswer}${correctness}</p>`;
+            }).join('');
+
+            resultHTML += list;
+            resultHTML += `<button onclick="shareGeneratedResults()">📤 Chia sẻ kết quả này</button>`;
+            resultHTML += `<div id="copyFeedback" style="display:none;"></div>`; // Ẩn ban đầu
+
+            resultsDisplayArea.innerHTML = resultHTML;
+            resultsDisplayArea.style.display = 'block';
+            resultsDisplayArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Hàm tạo nội dung HTML để chia sẻ và sao chép liên kết
+        function shareGeneratedResults() {
+            const listItems = questions.map((q, i) => {
+                const userAnswer = studentAnswers[i] || "(chưa trả lời)";
+                let correctnessInfo = "";
+                    if (q.correctAnswer) {
+                        const normalize = (text) => text.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").replace(/\s+/g, ' ').trim();
+                        const normalizedUserAnswer = normalize(userAnswer);
+                        const normalizedCorrectAnswer = normalize(q.correctAnswer);
+                        if (userAnswer !== "(chưa trả lời)" && normalizedUserAnswer === normalizedCorrectAnswer) {
+                            correctnessInfo = " <span style='color: green; font-weight:bold;'>(Rất tốt!)</span>";
+                        } else if (userAnswer !== "(chưa trả lời)") {
+                            correctnessInfo = ` <span style='color: red; font-weight:bold;'>(Cần xem lại)</span> - Đáp án đúng: <em>"${q.correctAnswer}"</em>`;
+                        } else {
+                            correctnessInfo = " <span style='color: orange;'>(chưa trả lời)</span>";
+                        }
+                    } else if (userAnswer === "(chưa trả lời)") {
+                            correctnessInfo = " <span style='color: orange;'>(chưa trả lời)</span>";
+                    }
+
+
+                return `
+                    <div style="margin-bottom: 15px; padding-bottom:10px; border-bottom: 1px solid #eee;">
+                        <p style="font-weight: bold; color: #0056b3; margin-bottom: 5px;">Câu hỏi ${i + 1}: ${q.question}</p>
+                        ${q.image ? `<p style="margin-top:5px; margin-bottom:5px;"><img src="${q.image}" alt="Hình ảnh cho câu hỏi ${i+1}" style="max-width: 200px; max-height:150px; height: auto; border-radius: 5px; border: 1px solid #ddd;" onerror="this.style.display='none'" /></p>` : ''}
+                        <p style="margin-top:5px;"><em>Câu trả lời của bạn:</em> ${userAnswer}${correctnessInfo}</p>
+                    </div>`;
+            }).join('');
+
+            const htmlContent = `
+                <!DOCTYPE html>
+                <html lang="vi">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Kết quả Luyện Nói Tiếng Anh của Bé</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f7f6; color: #333; line-height: 1.6; }
+                        .container-result { max-width: 700px; margin: 20px auto; background: #fff; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+                        h2 { color: #0056b3; text-align: center; border-bottom: 2px solid #0056b3; padding-bottom: 10px; margin-bottom: 25px; }
+                        p { margin-bottom: 8px; }
+                        em { font-style: italic; color: #555; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container-result">
+                        <h2>Kết quả Luyện Nói Tiếng Anh - Từ Vựng Đồ Ăn</h2>
+                        ${listItems}
+                        <p style="text-align:center; margin-top:25px; font-size:0.9em; color: #777;">Kết quả được tạo vào lúc: ${new Date().toLocaleString('vi-VN')}</p>
+                    </div>
+                </body>
+                </html>`;
+
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const copyFeedbackDiv = document.getElementById("copyFeedback");
+            copyFeedbackDiv.style.display = 'block'; // Hiển thị thông báo copy
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(() => {
+                    copyFeedbackDiv.innerHTML = `🔗 Link kết quả đã được sao chép! Bạn có thể dán (Ctrl+V hoặc Command+V) để chia sẻ. Hoặc <a href="${url}" target="_blank" rel="noopener noreferrer">xem kết quả tại đây</a>.`;
+                }).catch(err => {
+                    console.error('Không thể sao chép link tự động: ', err);
+                    copyFeedbackDiv.innerHTML = `Không thể tự động sao chép link. Vui lòng sao chép thủ công: <a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+                });
+            } else {
+                copyFeedbackDiv.innerHTML = `Trình duyệt không hỗ trợ sao chép tự động. Vui lòng sao chép link sau để chia sẻ: <a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+            }
+            // Mở link trong tab mới để người dùng xem trước
+            window.open(url, '_blank');
+        }
+
+        // Khởi động câu hỏi đầu tiên khi tải trang
+        // Hoặc có thể để người dùng nhấn "Bắt đầu"
+        // window.onload = speakQuestion; // Bỏ comment dòng này nếu muốn tự động bắt đầu
+    </script>
+</body>
+</html>
